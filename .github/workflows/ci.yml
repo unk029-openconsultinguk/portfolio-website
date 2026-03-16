@@ -58,8 +58,8 @@ jobs:
             set -e
             cd /home/unk029/portfolio-website
             git pull origin main
-            docker-compose -f .devcontainer/docker-compose.yml down
-            docker-compose -f .devcontainer/docker-compose.yml up -d
+            docker compose -f .devcontainer/docker-compose.yml down
+            docker compose -f .devcontainer/docker-compose.yml up -d
             sleep 3
             echo "✓ Deployment complete - Website live at https://unk029.dev.openconsultinguk.com"
           DEPLOY
