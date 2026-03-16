@@ -72,20 +72,50 @@ section {
 
 .hero-section {
     text-align: center;
-    padding: 6rem 2rem;
-    background: linear-gradient(to bottom, #eff6ff, #ffffff);
+    padding: 4rem 2rem;
+    background: radial-gradient(circle at top left, #f8fafc 0%, #eff6ff 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 4px solid var(--primary-color);
 }
 
-#user-name {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
+.hero-content {
+    max-width: 700px;
+}
+
+#user-name-hero {
+    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-section h1 {
+    font-size: 2.75rem;
+    margin-bottom: 0.25rem;
     color: #1e293b;
+    line-height: 1.1;
+    font-weight: 800;
 }
 
-.subtitle {
+.hero-role {
     font-size: 1.25rem;
+    font-weight: 700;
     color: var(--secondary-color);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.hero-description {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.75rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
 }
 
 .hero-cta {
@@ -93,6 +123,32 @@ section {
     justify-content: center;
     gap: 1rem;
 }
+
+.btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn.primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn.secondary {
+    background: white;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+}
+
 
 .btn {
     padding: 0.75rem 1.5rem;

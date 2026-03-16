@@ -15,8 +15,8 @@ const userProfile: UserProfile = {
 };
 
 const displayProfile = (profile: UserProfile): void => {
-    const nameEl = document.getElementById("user-name");
-    const roleEl = document.getElementById("user-role");
+    const nameEl = document.getElementById("user-name-hero");
+    const roleEl = document.getElementById("user-role-hero");
     const phoneEl = document.getElementById("user-phone");
     const emailEl = document.getElementById("user-email");
     const githubLinkEl = document.getElementById("github-link") as HTMLAnchorElement;
