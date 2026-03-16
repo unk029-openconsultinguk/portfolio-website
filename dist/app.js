@@ -1,9 +1,9 @@
 "use strict";
 const userProfile = {
-    name: "Developer Name",
-    role: "Full Stack Engineer",
-    phone: "+1 234 567 890",
-    email: "dev@example.com",
+    name: "John Doe",
+    role: "Senior Full Stack Engineer",
+    phone: "+1 (555) 000-1111",
+    email: "john.doe@example.com",
     github: "http://github.com/username"
 };
 const displayProfile = (profile) => {
@@ -12,7 +12,6 @@ const displayProfile = (profile) => {
     const phoneEl = document.getElementById("user-phone");
     const emailEl = document.getElementById("user-email");
     const githubLinkEl = document.getElementById("github-link");
-    // Immediately update text to remove "Loading..." if present
     if (nameEl)
         nameEl.textContent = profile.name;
     if (roleEl)
@@ -26,13 +25,35 @@ const displayProfile = (profile) => {
         githubLinkEl.textContent = "View GitHub Profile";
     }
 };
+const setupContactForm = () => {
+    const form = document.getElementById("contact-form");
+    const responseEl = document.getElementById("form-response");
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const nameInput = document.getElementById("name");
+            const emailInput = document.getElementById("email");
+            const messageInput = document.getElementById("message");
+            console.log("Form Submitted:", {
+                name: nameInput.value,
+                email: emailInput.value,
+                message: messageInput.value
+            });
+            if (responseEl) {
+                responseEl.textContent = `Thank you, ${nameInput.value}! Your message has been sent.`;
+                responseEl.style.color = "#059669";
+                form.reset();
+            }
+        });
+    }
+};
 const setupSmoothScroll = () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+        anchor.addEventListener('click', (e) => {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId) {
-                const targetElement = document.querySelector(targetId);
+            const href = anchor.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const targetElement = document.querySelector(href);
                 if (targetElement) {
                     targetElement.scrollIntoView({
                         behavior: 'smooth'
