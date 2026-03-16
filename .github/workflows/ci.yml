@@ -60,6 +60,9 @@ jobs:
             git pull origin main
             docker compose -f .devcontainer/docker-compose.yml down
             docker compose -f .devcontainer/docker-compose.yml up -d
-            sleep 3
+            sleep 2
+            # Fix file permissions for nginx to read HTML/CSS/JS
+            docker exec -u 0 devcontainer-nginx-1 chmod -R 755 /usr/share/nginx/html/ || true
+            sleep 1
             echo "✓ Deployment complete - Website live at https://unk029.dev.openconsultinguk.com"
           DEPLOY
