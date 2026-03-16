@@ -1,0 +1,14 @@
+{
+  "name": "portfolio-website",
+  "version": "1.0.0",
+  "description": "Developer profile website",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "npm run build && npx serve src"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

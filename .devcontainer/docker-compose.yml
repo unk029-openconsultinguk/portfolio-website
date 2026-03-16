@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/typescript-node:20
+    volumes:
+      - ..:/workspace:cached
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./src:/usr/share/nginx/html
+      - ./dist/app.js:/usr/share/nginx/html/dist/app.js
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
