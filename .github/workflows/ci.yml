@@ -1,4 +1,4 @@
-name: Deploy Static Website to GitHub Pages
+name: Build & Deploy with Nginx HTTPS
 
 on:
   push:
@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -24,16 +23,40 @@ jobs:
       - name: Compile TypeScript
         run: npm run build
 
-      - name: Prepare build directory
+      - name: Verify build output
         run: |
-          mkdir -p build
-          cp -r src/*.html build/
-          cp -r src/*.css build/
-          mkdir -p build/dist
-          cp -r dist/*.js build/dist/
+          ls -la dist/
+          file dist/app.js
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: build
+  deploy-to-production:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Production Server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          # Setup SSH key
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Deploy: pull latest, rebuild, restart containers
+          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST << 'EOF'
+            set -e
+            cd /home/unk029/portfolio-website
+            git pull origin main
+            npm install
+            npm run build
+            docker-compose -f .devcontainer/docker-compose.yml down
+            docker-compose -f .devcontainer/docker-compose.yml up -d
+            echo "✓ Deployment complete - Website live at https://unk029.dev.openconsultinguk.com"
+          EOF

@@ -7,10 +7,10 @@ interface UserProfile {
 }
 
 const userProfile: UserProfile = {
-    name: "John Doe",
+    name: "Nithya Kumar",
     role: "Senior Full Stack Engineer",
-    phone: "+1 (555) 000-1111",
-    email: "john.doe@example.com",
+    phone: "01234567890",
+    email: "nk@example.com",
     github: "http://github.com/username"
 };
 
