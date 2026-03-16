@@ -43,14 +43,18 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          # Setup SSH key
+          # Setup SSH key with proper newline handling
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          cat > ~/.ssh/deploy_key << 'SSHKEY'
+          ${{ secrets.SSH_PRIVATE_KEY }}
+          SSHKEY
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null
+          
+          # Add server to known_hosts
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts 2>/dev/null || true
 
           # Deploy: pull latest, rebuild, restart containers
-          ssh -i ~/.ssh/deploy_key $SERVER_USER@$SERVER_HOST << 'EOF'
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new $SERVER_USER@$SERVER_HOST << 'DEPLOY'
             set -e
             cd /home/unk029/portfolio-website
             git pull origin main
@@ -59,4 +63,4 @@ jobs:
             docker-compose -f .devcontainer/docker-compose.yml down
             docker-compose -f .devcontainer/docker-compose.yml up -d
             echo "✓ Deployment complete - Website live at https://unk029.dev.openconsultinguk.com"
-          EOF
+          DEPLOY
