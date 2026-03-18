@@ -22,3 +22,10 @@ certs/
 *.pem
 *.crt
 *.key
+
+.ssh/
+id_ed25519
+id_rsa
+*.pem
+.env
+certs/
